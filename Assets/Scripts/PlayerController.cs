@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     [Header("Boosters Settings")]
     [SerializeField] private float accelerationSpeed = 20f;
     [SerializeField] private float maxSpeed = 15f;
+    [SerializeField] private float rollAcceleration = 15f;
+
     
     [Header("Camera Movement")]
     [SerializeField] private Transform cameraTarget;
@@ -32,14 +34,17 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Vector2 moveInput;
     private Vector2 lookInput;
+    private float elevation;
+    private float roll;
+
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         rb = GetComponent<Rigidbody>();
-        rb.useGravity = true;
-        //savety stuff
+        rb.useGravity = false;
+        //safety stuff
         if (cameraTarget == null)
         {
             Debug.LogWarning("No camera target assigned to this game object.");
@@ -77,17 +82,28 @@ public class PlayerController : MonoBehaviour
         moveInput = value.Get<Vector2>();
     }
 
+    public void OnElevation(InputValue value)
+    {
+        elevation = value.Get<float>();
+    }
+
+
     public void OnLook(InputValue value)
     {
-        lookInput = value.Get<Vector2>();
+        Vector2 value_raw = value.Get<Vector2>();
+        lookInput = new Vector2(Mathf.Clamp(value_raw.x, -1f, 1f), Mathf.Clamp(value_raw.y, -1f, 1f));
+        print(lookInput);
+    }
+
+    public void OnRoll(InputValue value)
+    {
+        roll = value.Get<float>();
     }
 
     private void FixedUpdate()
     {
-        Hover();
         FireBoosters();
         UpdateBoostersVisualsAndSound();
-        Turn();
     }
 
 
@@ -102,9 +118,27 @@ public class PlayerController : MonoBehaviour
         // The Input gives us 1 and -1 we use this in a vector to calculate the direction
         // We get from W = 1, S = -1, A = -1 and D is 1
         // We could use the input.z for up and down, but we dont want this, because we have a hover state.
-        Vector3 flydirection = camForward * moveInput.y + camRight * moveInput.x;
-        
-        rb.AddForce(flydirection * accelerationSpeed, ForceMode.Acceleration);
+
+
+        // add local forward backward
+        rb.AddRelativeForce(Vector3.forward * moveInput.x * accelerationSpeed, ForceMode.Acceleration);
+
+        // add local left and right
+        rb.AddRelativeForce(Vector3.right * -moveInput.y * accelerationSpeed, ForceMode.Acceleration);
+
+        // add local up and down
+        rb.AddRelativeForce(Vector3.up * elevation * accelerationSpeed, ForceMode.Acceleration);
+
+
+
+        // add local roll
+        rb.AddRelativeTorque(Vector3.right * -roll * rollAcceleration, ForceMode.Acceleration);
+
+        // add local yaw
+        rb.AddRelativeTorque(Vector3.up * lookInput.x * mouseSensitivity, ForceMode.Acceleration);
+
+        // add local pitch
+        rb.AddRelativeTorque(Vector3.forward * -lookInput.y * mouseSensitivity, ForceMode.Acceleration);
         
         // we had that in class, with velocity and linearvelocity. Here is the new one :D 
         Vector3 flatVelocity = rb.linearVelocity;
@@ -114,28 +148,6 @@ public class PlayerController : MonoBehaviour
             Vector3 clamped = flatVelocity.normalized * maxSpeed;
             rb.linearVelocity = new Vector3(clamped.x, rb.linearVelocity.y, clamped.z);
         }
-    }
-    private void Hover()
-    {
-        // Checking where the ground is to hover up or down. Helps when we fly something down or up. Only Stairs can be a Problem. Ramps are fine.
-        // max Distance is capped on 50. More would be very useless and would look bad, with a 50 or more hover hight.
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, LayerMask.GetMask("Ground")))
-        {
-            float heightGoal = hoverHeight - hit.distance;
-            
-            float upVelocity = rb.linearVelocity.y;
-
-            // - upvelocity * damping prevents, that the smooth high adjustment
-            float lift = heightGoal * hoverStrength - upVelocity * hoverDamping;
-            rb.AddForce(Vector3.up * lift, ForceMode.Acceleration);
-        }
-    }
-
-    private void Turn()
-    {
-        // moves camera left and right. Very self explantory.
-        float yawDelta = lookInput.x * mouseSensitivity * Time.fixedDeltaTime;
-        rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, yawDelta, 0f));
     }
 
     private void UpdateBoostersVisualsAndSound()
