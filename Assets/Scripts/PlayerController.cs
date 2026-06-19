@@ -91,8 +91,10 @@ public class PlayerController : MonoBehaviour
     public void OnLook(InputValue value)
     {
         Vector2 value_raw = value.Get<Vector2>();
-        lookInput = new Vector2(Mathf.Clamp(value_raw.x, -1f, 1f), Mathf.Clamp(value_raw.y, -1f, 1f));
-        print(lookInput);
+        //lookInput = new Vector2(Mathf.Clamp(value_raw.x, -1f, 1f), Mathf.Clamp(value_raw.y, -1f, 1f));
+        lookInput = value_raw;
+
+
     }
 
     public void OnRoll(InputValue value)

@@ -3461,8 +3461,8 @@ Rigidbody:
   m_GameObject: {fileID: 8128790661881875009}
   serializedVersion: 5
   m_Mass: 1
-  m_LinearDamping: 2
-  m_AngularDamping: 5
+  m_LinearDamping: 1
+  m_AngularDamping: 2.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -3477,7 +3477,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!33 &2198693921319563262
 MeshFilter:
@@ -5517,8 +5517,9 @@ MonoBehaviour:
   hoverHeight: 8
   hoverStrength: 10
   hoverDamping: 6
-  accelerationSpeed: 50
-  maxSpeed: 70
+  accelerationSpeed: 100
+  maxSpeed: 150
+  rollAcceleration: 15
   cameraTarget: {fileID: 7762072684912412641}
   mouseSensitivity: 5
   boostersBack:
