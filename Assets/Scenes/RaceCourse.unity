@@ -3472,7 +3472,6 @@ GameObject:
   - component: {fileID: 3193435798379522821}
   - component: {fileID: 8207821336606708225}
   - component: {fileID: 6055890156512048530}
-  - component: {fileID: 8207821336606708226}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: Untagged
@@ -4174,7 +4173,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4167849914389747894}
-  - {fileID: 7762072684912412641}
   - {fileID: 1161762375148134487}
   - {fileID: 423813740082504535}
   - {fileID: 6321097685946632490}
@@ -5368,12 +5366,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 853765202296035696}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.078077964, y: -0.702783, z: 0.07807799, w: 0.7027829}
-  m_LocalPosition: {x: 14.6, y: 4.49, z: 0}
+  m_LocalRotation: {x: 0.07796713, y: -0.703779, z: 0.07818865, w: 0.70178545}
+  m_LocalPosition: {x: 2.70994, y: -3.4426227, z: -17.818584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3342282245236183722}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 12.679, y: -90, z: 0}
 --- !u!4 &7850378764680654622
 Transform:
@@ -5486,33 +5484,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 853765202296035696}
   m_Enabled: 1
---- !u!54 &8207821336606708226
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 853765202296035696}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!23 &8214474744107934526
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5881,12 +5852,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   hoverHeight: 8
   hoverStrength: 10
-  hoverDamping: 6
+  hoverDamping: 8
   accelerationSpeed: 100
   maxSpeed: 150
-  rollAcceleration: 3
+  rollAcceleration: 10
   cameraTarget: {fileID: 7762072684912412641}
   mouseSensitivity: 1
+  cameraOffset: {x: 7, y: 3, z: 0}
+  cameraDamping: 1
   boostersBack:
   - {fileID: 6348448938655988849}
   - {fileID: 1321348230876019134}
@@ -6056,6 +6029,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 7762072684912412641}
   - {fileID: 3342282245236183722}
   - {fileID: 1402570208}
   - {fileID: 1283929782}

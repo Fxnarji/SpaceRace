@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     [Header("Camera Movement")]
     [SerializeField] private Transform cameraTarget;
     [SerializeField] private float mouseSensitivity = 5f;
+    [SerializeField] private Vector3 cameraOffset = new Vector3(0f, 3f, -8f);
+    [SerializeField] private float cameraDamping = 6f;
     
     [Header("Visuals")]
     [SerializeField] private Renderer[] boostersBack;
@@ -93,8 +95,6 @@ public class PlayerController : MonoBehaviour
         Vector2 value_raw = value.Get<Vector2>();
         //lookInput = new Vector2(Mathf.Clamp(value_raw.x, -1f, 1f), Mathf.Clamp(value_raw.y, -1f, 1f));
         lookInput = value_raw;
-
-
     }
 
     public void OnRoll(InputValue value)
@@ -106,22 +106,12 @@ public class PlayerController : MonoBehaviour
     {
         FireBoosters();
         UpdateBoostersVisualsAndSound();
+        UpdateCamera();
     }
 
 
     private void FireBoosters()
     {
-        // saw that in a Youtube video. Works fine ^^
-        // fatten the cameras look direction so the ship moves with W in look direction
-        Vector3 camForward = Vector3.Scale(cameraTarget.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 camRight = cameraTarget.right;
-        
-        // -moveInput, because it flips W and S for Farward and Backwards Movement. It works this way after placing the minus :D
-        // The Input gives us 1 and -1 we use this in a vector to calculate the direction
-        // We get from W = 1, S = -1, A = -1 and D is 1
-        // We could use the input.z for up and down, but we dont want this, because we have a hover state.
-
-
         // add local forward backward
         rb.AddRelativeForce(Vector3.forward * moveInput.x * accelerationSpeed, ForceMode.Acceleration);
 
@@ -152,6 +142,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void UpdateCamera()
+    {
+        Vector3 desiredposition = transform.TransformPoint(cameraOffset);
+        cameraTarget.position = Vector3.Lerp(cameraTarget.position, desiredposition, cameraDamping * Time.deltaTime);
+        cameraTarget.LookAt(transform.position);
+    }
+    
     private void UpdateBoostersVisualsAndSound()
     {
         if (moveInput.y != 0 || moveInput.x != 0)
