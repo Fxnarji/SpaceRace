@@ -7,22 +7,15 @@ using UnityEngine.Serialization;
 //[RequireComponent(typeof(AudioSource))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Hover Settings")]
-    [SerializeField] private float hoverHeight = 3f;
-    [SerializeField] private float hoverStrength = 40f;
-    [SerializeField] private float hoverDamping = 6f;
-    
+
     [Header("Boosters Settings")]
     [SerializeField] private float accelerationSpeed = 20f;
     [SerializeField] private float maxSpeed = 15f;
     [SerializeField] private float rollAcceleration = 15f;
 
     
-    [Header("Camera Movement")]
-    [SerializeField] private Transform cameraTarget;
+    [Header("Mouse Movement")]
     [SerializeField] private float mouseSensitivity = 5f;
-    [SerializeField] private Vector3 cameraOffset = new Vector3(0f, 3f, -8f);
-    [SerializeField] private float cameraDamping = 6f;
     
     [Header("Visuals")]
     [SerializeField] private Renderer[] boostersBack;
@@ -36,6 +29,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Vector2 moveInput;
     private Vector2 lookInput;
+
+    
     private float elevation;
     private float roll;
 
@@ -47,11 +42,6 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         //safety stuff
-        if (cameraTarget == null)
-        {
-            Debug.LogWarning("No camera target assigned to this game object.");
-            return;
-        }
         if (boostersBack == null)
         {
             Debug.LogWarning("No boosters assigned to this game object.");
@@ -106,7 +96,6 @@ public class PlayerController : MonoBehaviour
     {
         FireBoosters();
         UpdateBoostersVisualsAndSound();
-        UpdateCamera();
     }
 
 
@@ -142,12 +131,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void UpdateCamera()
-    {
-        Vector3 desiredposition = transform.TransformPoint(cameraOffset);
-        cameraTarget.position = Vector3.Lerp(cameraTarget.position, desiredposition, cameraDamping * Time.deltaTime);
-        cameraTarget.LookAt(transform.position);
-    }
     
     private void UpdateBoostersVisualsAndSound()
     {
