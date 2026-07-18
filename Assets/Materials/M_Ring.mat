@@ -52,11 +52,11 @@ Material:
     m_Ints: []
     m_Floats:
     - _Active: 0
-    - _Alpha: 0.415
+    - _Alpha: 0.458
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _ColorActive: {r: 0.03196448, g: 0.6792453, b: 0, a: 1}
+    - _ColorActive: {r: 0.046242833, g: 1, b: 0, a: 1}
     - _ColorInactiave: {r: 1, g: 0.94509804, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
