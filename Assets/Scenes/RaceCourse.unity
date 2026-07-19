@@ -8151,7 +8151,7 @@ MonoBehaviour:
   accelerationSpeed: 100
   maxSpeed: 150
   rollAcceleration: 10
-  mouseSensitivity: 1
+  mouseSensitivity: 2
   boostersBack:
   - {fileID: 6348448938655988849}
   - {fileID: 1321348230876019134}
